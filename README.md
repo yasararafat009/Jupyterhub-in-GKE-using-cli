@@ -172,13 +172,9 @@ Once you done Github side. Goto helm config file add the client id and client se
       allow_all: True
 ```
 
-Update the helm 
-```
-helm upgrade jupyterhub jupyterhub/jupyterhub -f .\hub.yaml
-```
-
 # SSL Configure 
 We use automatic, to get certificate from Letsencrypt
+
 Just add the email and domain url in the host
 ```
  https:
@@ -198,4 +194,8 @@ Just add the email and domain url in the host
       crt: tls.crt
     hosts: [demo.com]
 
+```
+Finally, Update the helm 
+```
+helm upgrade jupyterhub jupyterhub/jupyterhub -f .\hub.yaml
 ```
