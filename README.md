@@ -143,3 +143,59 @@ Create the custom config file and install
 ```
 helm install jupyterhub jupyterhub/jupyterhub --namespace demo  --values .\hub.yaml
 ``` 
+After installed Juypterhub. access url using public ip. Once you checked, configure SSL and github Oauth
+
+# Configure OAuth github.
+Goto your organization --> Developer setting --> OAuth Apps --> Create new app 
+
+Give Application Name --> Homepage url --> Authorization callback URL
+
+Eg- Your homepage url - demo.com 
+
+Your Authorization callback URL should be - **https://demo.com/hub/oauth_callback**
+
+You will get Client id and Client secret
+
+**Note: URL should be in HTTPS**
+
+Once you done Github side. Goto helm config file add the client id and client secret 
+
+```
+  config:
+    JupyterHub:
+      admin_access: true
+      authenticator_class: github
+    GitHubOAuthenticator:
+      client_id: "xxxxxxxxxxxxxxxxxxxxxxxxxx" # You can put the client ID here, or from the secret
+      client_secret: "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+      oauth_callback_url: "https://demo.demo.com/hub/oauth_callback"
+      allow_all: True
+```
+
+Update the helm 
+```
+helm upgrade jupyterhub jupyterhub/jupyterhub -f .\hub.yaml
+```
+
+# SSL Configure 
+We use automatic, to get certificate from Letsencrypt
+Just add the email and domain url in the host
+```
+ https:
+    enabled: false
+    type: letsencrypt
+    #type: letsencrypt, manual, offload, secret
+    letsencrypt:
+      contactEmail: [xxx@xx.com]
+      # Specify custom server here (https://acme-staging-v02.api.letsencrypt.org/directory) to hit staging LE
+      acmeServer: https://acme-v02.api.letsencrypt.org/directory
+    manual:
+      key:
+      cert:
+    secret:
+      name:
+      key: tls.key
+      crt: tls.crt
+    hosts: [demo.com]
+
+```
