@@ -35,12 +35,7 @@ hub:
   config:
     JupyterHub:
       admin_access: true
-      authenticator_class: github
-    GitHubOAuthenticator:
-      client_id: "xxxxxxxxxxxxxxxxxxxxxxxxxx" # You can put the client ID here, or from the secret
-      client_secret: "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-      oauth_callback_url: "https://demo.demo.com/hub/oauth_callback"
-      allow_all: True
+      authenticator_class: dummy
   service:
     type: ClusterIP
     annotations: {}
@@ -90,7 +85,7 @@ hub:
   extraVolumeMounts: []
   image:
     name: quay.io/jupyterhub/k8s-hub
-    tag: "4.1.0"
+    tag: "4.2.0"
     pullPolicy:
     pullSecrets: []
   resources: {}
@@ -279,7 +274,7 @@ proxy:
       # tag is automatically bumped to new patch versions by the
       # watch-dependencies.yaml workflow.
       #
-      tag: "v3.3.1" # ref: https://hub.docker.com/_/traefik?tab=tags
+      tag: "v3.3.5" # ref: https://hub.docker.com/_/traefik?tab=tags
       pullPolicy:
       pullSecrets: []
     hsts:
@@ -331,7 +326,7 @@ proxy:
         type: "RuntimeDefault"
     image:
       name: quay.io/jupyterhub/k8s-secret-sync
-      tag: "4.1.0"
+      tag: "4.2.0"
       pullPolicy:
       pullSecrets: []
     resources: {}
@@ -371,7 +366,7 @@ singleuser:
   networkTools:
     image:
       name: quay.io/jupyterhub/k8s-network-tools
-      tag: "4.1.0"
+      tag: "4.2.0"
       pullPolicy:
       pullSecrets: []
     resources: {}
@@ -424,7 +419,7 @@ singleuser:
       subPath:
   image:
     name: quay.io/jupyterhub/k8s-singleuser-sample
-    tag: "4.1.0"
+    tag: "4.2.0"
     pullPolicy:
     pullSecrets: []
   startTimeout: 300
@@ -556,7 +551,7 @@ scheduling:
       # here. We aim to stay around 1 minor version behind the latest k8s
       # version.
       #
-      tag: "v1.30.8" # ref: https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
+      tag: "v1.30.11" # ref: https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
       pullPolicy:
       pullSecrets: []
     nodeSelector: {}
@@ -654,7 +649,7 @@ prePuller:
     # image and the configuration below relates to the hook-image-awaiter Job
     image:
       name: quay.io/jupyterhub/k8s-image-awaiter
-      tag: "4.1.0"
+      tag: "4.2.0"
       pullPolicy:
       pullSecrets: []
     containerSecurityContext:
