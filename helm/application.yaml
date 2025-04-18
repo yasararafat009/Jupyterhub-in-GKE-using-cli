@@ -1,0 +1,61 @@
+# File: jupyterhub/application.yaml
+# Description: Argo CD Application manifest for deploying JupyterHub
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Name of the Argo CD Application (visible in Argo UI)
+  name: jupyterhub
+  # Namespace where Argo CD is running (usually 'argocd')
+  namespace: argocd
+  # Optional: Add finalizers to prevent accidental deletion
+  # finalizers:
+  #   - resources-finalizer.argocd.argoproj.io
+spec:
+  # Argo CD Project (usually 'default' unless you've configured others)
+  project: default
+
+  # Source of the application definition
+  source:
+    # URL of your Git repository
+    repoURL: https://github.com/yasararafat009/Jupyterhub-in-GKE-using-cli.git # e.g., https://github.com/your-username/your-repo.git
+
+    # Branch, tag, or commit hash to track
+    targetRevision: HEAD # Or 'main', 'stable', 'v1.2.3', etc.
+
+    # Path within the repository where the configuration lives
+    path: helm
+
+    # Specify that this is a Helm chart deployment
+    helm:
+      # List of values files to use (relative to the 'path' defined above)
+      valueFiles:
+        - values.yaml
+
+      # --- Helm Chart Information ---
+      # Name of the chart
+      chart: jupyterhub
+      # Helm repository URL where the chart is located
+      repoURL: https://jupyterhub.github.io/helm-chart/
+      # Specific version of the Helm chart to deploy (HIGHLY RECOMMENDED for consistency)
+      version: "4.2.0" # e.g., "3.2.1" - Find the latest stable version!
+
+  # Destination cluster and namespace
+  destination:
+    # Target cluster URL (use 'https://kubernetes.default.svc' for the cluster Argo CD runs in)
+    server: http://cluster-test:8001
+    # Namespace where JupyterHub components will be deployed
+    namespace: jupyterhub # Choose a dedicated namespace
+
+  # Sync policy
+  syncPolicy:
+    # Optional: Automatically sync when changes are detected in Git
+    automated:
+      prune: true    # Automatically delete resources removed from the Git source
+      selfHeal: true # Automatically sync if the live state deviates from Git
+
+    # Options for the sync operation
+    syncOptions:
+      - CreateNamespace=true # Automatically create the 'jupyterhub' namespace if it doesn't exist
+      # - PruneLast=true      # Might be useful in complex scenarios
+      # - ApplyOutOfSyncOnly=true # Optimizes syncs
