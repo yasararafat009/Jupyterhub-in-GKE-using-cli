@@ -1,0 +1,38 @@
+name: itt
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas
+  - numpy
+  - fsspec
+  - gcsfs
+  - ujson
+  - xarray
+  - kerchunk
+  - numba>=0.56
+  - xclim>=0.38
+  - climpred
+  - dask
+  - xesmf
+  - regionmask
+  - xhistogram
+  - scikit-learn
+  - xskillscore
+  - cartopy
+  - flask
+  - cfgrib
+  - requests
+  - s3fs
+  - boto3
+  - pyarrow
+  - google-cloud-storage
+  - pytest
+  - gunicorn
+  - altair
+  - matplotlib
+  - pip:
+      - xbootstrap
+      - python-dotenv
+      - vl-convert-python
+      - coiled
